@@ -8,7 +8,7 @@ The Coronavirus lockdown has resulted in stories of [people looking to adopt pet
 ### User Documentation
 Watch this video
 
-Click here to go to [Petfinder](https://project-bbers.herokuapp.com/)
+Click here to go to [Friendly Neighborhood Pet Adoption](https://project-bbers.herokuapp.com/)
 
 ````
 TBD
