@@ -7,7 +7,7 @@ var db = require("../models");
 var axios = require("axios");
 
 module.exports = function (app) {
-  // Get all examples
+  // Get all examples, this was original boilerplate test calls
   app.get("/api/examples", function (req, res) {
     db.ChosenPet.findAll({}).then(function (dbExamples) {
       res.json(dbExamples);
@@ -29,27 +29,8 @@ module.exports = function (app) {
     });
   });
 
-  /* Create a new customer
-  app.post("/api/signup", function (req, res) {
-    console.log("req.body", req.body);
-    db.Customer.create({
-      customerId: req.body.customerId     // need to add other keys to this object
-    }).then(function (dbSignup) {
-      res.json(dbSignup);
-    });
-  });
 
-  // Create a newly chosen pet
-  app.post("/api/login", function (req, res) {
-    console.log("req.body", req.body);
-    db.Customer.findOne({
-      customerId: req.body.customerId     // need to add other keys to this object
-    }).then(function (dbLogin) {
-      res.json(dbLogin);
-    });
-  });*/
-
-  // Delete an example by id
+  // Delete an example by id, original boilerplate testing route for deletes, not used in app
   app.delete("/api/examples/:id", function (req, res) {
     db.Example.destroy({ where: { id: req.params.id } }).then(function (dbExample) {
       res.json(dbExample);
@@ -85,13 +66,9 @@ module.exports = function (app) {
           url: "https://api.petfinder.com/v2/types"
         })
           .then(function (typeObject) {
-            // for (var i = 0; i < typeObject.data.types.length; i++) {
-            //   console.log(typeObject.data.types[i]);
-            // }
             var petTypeObject = {
               petType: typeObject.data.types
             };
-            // res.render("search", petTypeObject).end();  // only to use if go back to search.handlebars
             res
               .header("Authentication", process.env.PETFINDER_ACCESS_TOKEN)  //send back token as well
               .json(petTypeObject)
@@ -130,27 +107,6 @@ module.exports = function (app) {
         var petsFoundObject = {
           petsFound: searchPetsResponse.data.animals
         };
-        /*
-        var petsFoundArray = searchPetsResponse.data.animals;
-        console.log("\n---------------------\n");
-        console.log("!!!THIS IS THE JSON RETURNED AFTER PETFINDER API CALL:\n");
-       
-        //  ADDED BY EO
-        // Code that populates the chosenpets database for testing this for loop can then be used later in the index.js to populate caro
-        for (let index = 0; index < 5; index++) {
-          console.log(petsFoundArray[index].id);
-          console.log(petsFoundArray[index].name);
-          console.log(petsFoundArray[index].url);
-          console.log(petsFoundArray[index].description);
-          db.ChosenPet.create({
-            petId: petsFoundArray[index].id,
-            customerId: 6,
-            petName: petsFoundArray[index].name,
-            url: petsFoundArray[index].url,
-            description: petsFoundArray[index].description
-          });
-          console.log("\n---------------------\n");
-        }*/
         res.send(petsFoundObject).end();
       })
       .catch(function (error) {
@@ -158,7 +114,7 @@ module.exports = function (app) {
       });
   });
 
-  // Create a 'Sign Up' page
+  // Create a 'Sign Up' record for new Customer in Customer table
   app.post("/api/signup", function (req, res) {
     console.log("req.body", req.body);
     db.Customer.create({
@@ -180,7 +136,7 @@ module.exports = function (app) {
   });
 
 
-  //'Login' page
+  // Get login data for this user, if match 1st object in array is user
   app.get("/api/login", function (req, res) {
     console.log("req.query", req.query);
     db.Customer.findAll({
@@ -193,7 +149,7 @@ module.exports = function (app) {
     });
   });
 
-  //  Delete a chosen pet from the database
+  //  Delete a chosen pet from the ChosenPet database
   app.delete("/api/deletePet/:id", function (req, res) {
     db.ChosenPet.destroy({
       where: {
@@ -207,15 +163,15 @@ module.exports = function (app) {
   });
 
   //  Load the current user/customers favorite pets into the carousel on the homepage
-  app.get("/api/loadfavorites/:id", function(req, res) {
+  app.get("/api/loadfavorites/:id", function (req, res) {
     console.log(req.params.id);
     db.ChosenPet.findAll({
       where: {
         customerId: req.params.id
       }
-    }).then(function(dbChosenPets) {
+    }).then(function (dbChosenPets) {
       res.json(dbChosenPets);
-      });
+    });
   });
 };
 

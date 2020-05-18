@@ -19,9 +19,6 @@ if (config.use_env_variable) {
   );
 }
 
-// var model = sequelize.import(path.join(__dirname, "chosenpet.js"));
-// db[model.name] = model;
-
 
 fs.readdirSync(__dirname)
   .filter(function (file) {

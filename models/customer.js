@@ -11,14 +11,6 @@ module.exports = function (sequelize, DataTypes) {
         userPassword: DataTypes.STRING
     });
 
-    // Customer.associate = function (models) {
-    //     // We're saying that a chosenPet should belong to Customer
-    //     Customer.hasMany(ChosenPet, {
-    //         as: "ChosenPet"
-    //         // foreignKey: "userId",
-    //         // sourceKey: "userId",
-    //         // onDelete: "cascade"
-    //     });
-    // };
+
     return Customer;
 };

@@ -29,8 +29,6 @@ var API = {
             .then(function (petsFound) {
                 // console.log("petTypes: ", petsFound);
                 petsFoundObject = petsFound;
-                // console.log(petsFoundObject);
-                // location.reload();
             })
             .catch(function (err) {
                 console.log("error getting types from PetFinder: ", err);
@@ -43,22 +41,17 @@ var API = {
             },
             type: "POST",
             url: "api/choosePet",
-            // data: choosePetRequestObject
             data: JSON.stringify(choosePetRequestObject)
         });
     },
     signup: function (customerObject) {
         return $.ajax({
-            // headers: {
-            //     "Content-Type": "application/json"
-            // },
             type: "POST",
             url: "api/signup",
             data: customerObject
         });
     },
     login: function (customerObject) {
-        //var bodyObj = customerObject
 
         console.log("cutomer object", customerObject);
 
@@ -70,7 +63,6 @@ var API = {
             url: "api/login",
             data: customerObject
         });
-        // .then(function () { location.reload() })
     },
     deletePet: function (Id) {
         return $.ajax({
@@ -78,7 +70,7 @@ var API = {
             url: "/api/deletePet/" + Id
         });
     },
-    loadFavoritePets: function(customerID){
+    loadFavoritePets: function (customerID) {
         return $.ajax({
             method: "GET",
             url: "/api/loadfavorites/" + customerID,

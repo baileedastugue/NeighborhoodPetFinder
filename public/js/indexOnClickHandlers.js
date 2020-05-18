@@ -1,12 +1,9 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable indent */
 
-// import { INTEGER } from "sequelize/types";
+// ** Below see onClick event handlers called from events at bottom of index.js
 
-// ** These are all called from onClick events at bottom of index.js
-
-// ** ADDED BY SB
-// handleLoadPetTypesBtnClick is called when loadPetTypes button is clicked or from searchSubmitBtnClick to start doing searches 
+// Called when loadPetTypes button is clicked or from searchSubmitBtnClick to start doing searches 
 // variable petTypes is loaded with PetFinder types object
 var handleLoadPetTypesBtnClick = function () {
     console.log("Going for token and petTypes object from petFinder");
@@ -15,12 +12,6 @@ var handleLoadPetTypesBtnClick = function () {
 };
 
 
-// ** brought in from index.js by SB to standardize all onClick event handlers in this file
-//  called from searchPageBtn onClick event, load petfinder.com token and pet types in petTypesObject, then load search page
-
-
-
-// ** brought in from index.js by SB to standardize all onClick event handlers in this file
 // Called from searchSubmitBtn click event, load cards with search data
 var handleSearchSubmitBtnClick = function (event) {
     event.preventDefault();
@@ -52,12 +43,11 @@ var handleSearchSubmitBtnClick = function (event) {
             }
         });
     });
-    
+
 }
 
 
-// ** ADDED BY SB  this is a special on index.handlebars, console logs the 20 pet array, just for testing load index.js
-// handleSearchPetsBtnClick is called when loadSearch button is clicked
+// Called when loadSearch button is clicked
 // variable petsFound is loaded with PetFinder petsFound object
 var handleSearchPetsBtnClick = function (event) {
     event.preventDefault();
@@ -75,8 +65,7 @@ var handleSearchPetsBtnClick = function (event) {
 };
 
 
-// ** ADDED BY SB
-// handleChooseBtnClick is called when a pet's choose button is clicked
+// Called when a pet's choose button is clicked
 // Sends the petfinder unique ID and customer ID to be stored in chosenPetsDB
 var handleChooseBtnClick = function () {
     $(this).attr("src", "./images/favorited.png").attr("status", "favorited");
@@ -103,14 +92,13 @@ var handleChooseBtnClick = function () {
     });
 };
 
-// ** ADDED BY RZ and SB
-// handleLoginSubmitBtnClick is called when a pet's choose button is clicked
+
+// Called when a pet's choose button is clicked
 // Sends the petfinder unique ID and customer ID to be stored in chosenPetsDB
 var handleLoginSubmitBtnClick = function () {
     var customerObject = {
         userName: $('#userName').val(),
         userPassword: $('#userPassword').val()
-
     };
     console.log("customerObject", customerObject);
     API.login(customerObject).then(function (response) {
@@ -127,8 +115,9 @@ var handleLoginSubmitBtnClick = function () {
 
     });
 };
-// ** ADDED BY RZ and SB
-// handleChooseBtnClick is called when a pet's choose button is clicked
+
+
+// Called when a pet's choose button is clicked
 // Sends the petfinder unique ID and customer ID to be stored in chosenPetsDB
 var handleSignUpSubmitBtnClick = function () {
     var newCustomerObject = {
@@ -138,7 +127,6 @@ var handleSignUpSubmitBtnClick = function () {
         userEmail: $("#userEmail").val(),
         userZip: $("#userZip").val(),
         userPassword: $("#userSignUpPassword").val(),
-        // userPassword: "tester",
     };
     API.signup(newCustomerObject).then(function (response) {
         console.log("error response object: ", response);
@@ -156,11 +144,7 @@ var handleSignUpSubmitBtnClick = function () {
 
         }
     })
-        // .catch(function (err) {
-        //     console.log("error response object: ", err);
-        // })
         ;
-
 };
 
 var handleLogOutBtnClick = function () {
@@ -173,10 +157,6 @@ var handleHomePageBtnClick = function () {
 };
 
 var handleSearchPageBtnClick = function () {
-    // event.preventDefault();
-    /*API.loadPetTypes().then(function (petTypesObject) {
-        console.log("Going for token and petTypes object from petFinder: ", petTypesObject);
-    });*/
     window.location.href = "/search";
 };
 

@@ -3,11 +3,10 @@
 // Get references to page elements
 
 
-// *** Added by SB, selectors to onClick event handlers at bottom of this file: index.js
+// *** Selectors to onClick event handlers at bottom of this file: index.js
 var $petFoundList = $("#petFound-list");
 var $loadPetTypesBtn = $("#loadPetTypes"); // button to load type object from petfinder
 var $searchPetsBtn = $("#searchPets");
-
 var $signUpSubmitBtn = $("#signUpSubmitBtn");
 var $logInSubmitBtn = $("#logInSubmitBtn");
 var $searchSubmitBtn = $("#searchSubmitBtn");
@@ -20,11 +19,9 @@ var $carouselContainer = $("#carousel-container");
 var customerId = 0;
 var userName = "guest"
 
-var petTypesObject; //global object with petfinder type object for search
-var petsFoundObject;
+var petTypesObject; //global object with petfinder type object array
+var petsFoundObject; // global object with petfinder petsFound object array
 
-// var API for Ajax API calls now located in indexApiCalls.js in this directory.  
-// ** Remember include: <script src="/js/indexApiCalls.js"></script> at bottom of .handleBars files
 
 
 // ** ADDED BY SB
@@ -72,7 +69,7 @@ function addCards() {
     $("#carousel-container").show();
     $(".carousel-inner").empty();
     $("a.caro-controls").css("display", "flex");
-    
+
     for (var i = 0; i < dummyArray.length; i++) {
       // console.log(dummyArray[i]);
       // if the survey has been taken and there are results, add images to cards in the carousel
@@ -89,16 +86,16 @@ function addCards() {
         dummyArray[i].photos.push({
           full: "https://t7-live-ahsd8.nyc3.cdn.digitaloceanspaces.com/animalhumanesociety.org/files/styles/animal_450x330/flypub/default_images/shy_10.jpg?itok=xmk-2ZMz"
         });
-      } 
+      }
       var allPetImages = [];
       for (var e = 0; e < dummyArray[i].photos.length; e++) {
         allPetImages.push(dummyArray[i].photos[e].full);
-      }  
+      }
       if (allPetImages.length > 1) {
         console.log(allPetImages);
       }
       allPetImages = allPetImages.toString();
-      
+
 
       var image = $("<img>");
       image
@@ -116,9 +113,9 @@ function addCards() {
           "petImage": allPetImages
           // dummyArray[i].photos[0].full
         });
-        // .text("Choose");                                    // add button to choose
-      
-        var cardTitle = $("<h5>")
+      // .text("Choose");                                    // add button to choose
+
+      var cardTitle = $("<h5>")
         .attr("class", "card-title")
         .html(dummyArray[i].name);
       cardTitle.append(cardButton);
@@ -141,7 +138,7 @@ function addCards() {
   }
 }
 
-function addFavorites2 () {
+function addFavorites2() {
   var custID = sessionStorage.getItem("customerId");
   var userName = sessionStorage.getItem("userName");
   $("#welcomeText").text(`Welcome ${userName}`);
@@ -160,15 +157,16 @@ function addFavorites2 () {
       ))
     }
     else {
-      var recentFave = favoritesArray[favoritesArray.length-1];
-    // console.log(recentFave);
+      var recentFave = favoritesArray[favoritesArray.length - 1];
+      // console.log(recentFave);
       for (var i = 0; i < favoritesArray.length; i++) {
-      // adds images below card
+        // adds images below card
         var images = favoritesArray[i].petImage.split(',');
         var img = $("<img src='" + images[0] + "'>");
         img.attr({
           "class": "favorite-img",
-          "data-id": favoritesArray[i].id});
+          "data-id": favoritesArray[i].id
+        });
         $("#favorites-card-container").prepend(img);
         // console.log(img.data("id"));
       }
@@ -180,7 +178,7 @@ function addFavorites2 () {
         } else {
           caroImgDiv.attr("class", "carousel-item")
         }
-        var caroImg =  $("<img src='" + images[e] + "'>");
+        var caroImg = $("<img src='" + images[e] + "'>");
         caroImgDiv.append(caroImg);
 
         $("#favorited .carousel-inner").append(caroImgDiv);
@@ -200,56 +198,56 @@ function addFavorites2 () {
         <a href="${recentFave.url}" target="_blank">More Information</a>`
       ))
     }
-    
+
   })
 }
 
 
-$(document).on("click",".favorite-img", function() {
+$(document).on("click", ".favorite-img", function () {
   var thisPet = $(this).data("id");
   var custID = sessionStorage.getItem("customerId");
   API.loadFavoritePets(custID).then(function (response) {
-      for (var i = 0; i < response.length; i++) {
-        if (response[i].id == thisPet) {
-          var clickedPic = response[i];
-        }
+    for (var i = 0; i < response.length; i++) {
+      if (response[i].id == thisPet) {
+        var clickedPic = response[i];
       }
-      console.log(clickedPic);
-      $(".card-header").empty();
-      $(".petInfo").empty();
-      $("#favorited .carousel-inner").empty()
-      $(".card-header").append($("<h2>").text(clickedPic.petName));
-      if (clickedPic.description == null) {
-        clickedPic.description = "No pet description available";
-      }
-      $(".petInfo").append($("<p>").html(
-        `${clickedPic.description}<br>
+    }
+    console.log(clickedPic);
+    $(".card-header").empty();
+    $(".petInfo").empty();
+    $("#favorited .carousel-inner").empty()
+    $(".card-header").append($("<h2>").text(clickedPic.petName));
+    if (clickedPic.description == null) {
+      clickedPic.description = "No pet description available";
+    }
+    $(".petInfo").append($("<p>").html(
+      `${clickedPic.description}<br>
         <a href="${clickedPic.url}" target="_blank">More Information</a>`
-      ))
-      var images = clickedPic.petImage.split(',');
-      console.log(images);
-      for (var e = 0; e < images.length; e++) {
-        var caroImgDiv = $("<div>");
-        if (e === 0) {
-          caroImgDiv.attr("class", "carousel-item active");
-        } else {
-          caroImgDiv.attr("class", "carousel-item")
-        }
-        var caroImg =  $("<img src='" + images[e] + "'>");
-        caroImgDiv.append(caroImg);
-        
-        $("#favorited .carousel-inner").append(caroImgDiv);
+    ))
+    var images = clickedPic.petImage.split(',');
+    console.log(images);
+    for (var e = 0; e < images.length; e++) {
+      var caroImgDiv = $("<div>");
+      if (e === 0) {
+        caroImgDiv.attr("class", "carousel-item active");
+      } else {
+        caroImgDiv.attr("class", "carousel-item")
       }
-      if (images.length === 1) {
-        $("a.fave-caro-controls").css("display", "none");
-      }
-      else {
-        $("a.fave-caro-controls").css("display", "flex");
-      }
+      var caroImg = $("<img src='" + images[e] + "'>");
+      caroImgDiv.append(caroImg);
+
+      $("#favorited .carousel-inner").append(caroImgDiv);
+    }
+    if (images.length === 1) {
+      $("a.fave-caro-controls").css("display", "none");
+    }
+    else {
+      $("a.fave-caro-controls").css("display", "flex");
+    }
   })
 })
 
-function popCardInfo () {
+function popCardInfo() {
   for (var e = 0; e < images.length; e++) {
     console.log(images[e]);
     var caroImgDiv = $("<div>");
@@ -258,7 +256,7 @@ function popCardInfo () {
     } else {
       caroImgDiv.attr("class", "carousel-item")
     }
-    var caroImg =  $("<img src='" + images[e] + "'>");
+    var caroImg = $("<img src='" + images[e] + "'>");
     caroImgDiv.append(caroImg);
 
     $("#favorited .carousel-inner").append(caroImgDiv);
@@ -267,7 +265,7 @@ function popCardInfo () {
   $(".card-header").append($("<h2>").html(recentFave.petName));
   $(".petInfo").append($("<p>").html(
     `${recentFave.description}<br>
-    <a href="${recentFave.url}" target="_blank">More Information</a>`)) 
+    <a href="${recentFave.url}" target="_blank">More Information</a>`))
 }
 
 addFavorites2();
@@ -308,8 +306,7 @@ $logInSubmitBtn.on("click", function () {
 
 });
 
-// ** ADDED BY SB AND EO
-// Added event listeners for Friendly Neighborhood Pet Finder
+// ** Event listeners for Friendly Neighborhood Pet Finder
 $carouselContainer.on("click", ".choose", handleChooseBtnClick);
 $loadPetTypesBtn.on("click", handleLoadPetTypesBtnClick);
 $searchPetsBtn.on("click", handleSearchPetsBtnClick);
